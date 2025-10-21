@@ -1,0 +1,611 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Yuk Cek Lemak Mu - Cek Kolesterol Online</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        header {
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            text-align: center;
+        }
+
+        .logo {
+            font-size: 2.5em;
+            font-weight: bold;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 10px;
+        }
+
+        .subtitle {
+            color: #666;
+            font-size: 1.1em;
+        }
+
+        .creator {
+            color: #999;
+            font-size: 0.9em;
+            margin-top: 10px;
+        }
+
+        .main-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin-bottom: 30px;
+        }
+
+        @media (max-width: 768px) {
+            .main-content {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .card {
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+
+        .card h2 {
+            color: #333;
+            margin-bottom: 20px;
+            font-size: 1.8em;
+            border-bottom: 3px solid #667eea;
+            padding-bottom: 10px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            color: #555;
+            font-weight: 600;
+        }
+
+        input, select {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            font-size: 1em;
+            transition: border-color 0.3s;
+        }
+
+        input:focus, select:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        .btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 15px 40px;
+            border: none;
+            border-radius: 50px;
+            font-size: 1.1em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.3s, box-shadow 0.3s;
+            width: 100%;
+            margin-top: 20px;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(102, 126, 234, 0.4);
+        }
+
+        .result-box {
+            background: #f8f9fa;
+            border-radius: 15px;
+            padding: 20px;
+            margin-top: 20px;
+            display: none;
+        }
+
+        .result-box.show {
+            display: block;
+            animation: slideIn 0.5s ease;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .risk-level {
+            font-size: 1.5em;
+            font-weight: bold;
+            padding: 15px;
+            border-radius: 10px;
+            text-align: center;
+            margin-bottom: 15px;
+        }
+
+        .risk-low {
+            background: #d4edda;
+            color: #155724;
+        }
+
+        .risk-medium {
+            background: #fff3cd;
+            color: #856404;
+        }
+
+        .risk-high {
+            background: #f8d7da;
+            color: #721c24;
+        }
+
+        .info-section {
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            margin-bottom: 30px;
+        }
+
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .info-card {
+            background: linear-gradient(135deg, #667eea20 0%, #764ba220 100%);
+            padding: 20px;
+            border-radius: 15px;
+            border-left: 4px solid #667eea;
+        }
+
+        .info-card h3 {
+            color: #333;
+            margin-bottom: 10px;
+        }
+
+        .info-card p {
+            color: #666;
+            line-height: 1.6;
+        }
+
+        .tips-list {
+            list-style: none;
+            margin-top: 20px;
+        }
+
+        .tips-list li {
+            background: #f8f9fa;
+            padding: 15px;
+            margin-bottom: 10px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+        }
+
+        .tips-list li:before {
+            content: "✓";
+            background: #667eea;
+            color: white;
+            width: 25px;
+            height: 25px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 15px;
+            flex-shrink: 0;
+        }
+
+        footer {
+            background: white;
+            border-radius: 20px;
+            padding: 20px;
+            text-align: center;
+            color: #666;
+        }
+
+        .warning {
+            background: #fff3cd;
+            border: 2px solid #ffc107;
+            border-radius: 10px;
+            padding: 15px;
+            margin-top: 20px;
+            color: #856404;
+        }
+
+        .loading {
+            display: none;
+            text-align: center;
+            margin: 20px 0;
+        }
+
+        .loading.show {
+            display: block;
+        }
+
+        .spinner {
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #667eea;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="logo">🩺 Yuk Cek Lemak Mu</div>
+            <div class="subtitle">Platform Cek Kolesterol Online Gratis</div>
+            <div class="creator">By: Nirmaysi</div>
+        </header>
+
+        <div class="main-content">
+            <div class="card">
+                <h2>📋 Form Pemeriksaan</h2>
+                <form id="cholesterolForm">
+                    <div class="form-group">
+                        <label for="name">Nama Lengkap:</label>
+                        <input type="text" id="name" required placeholder="Masukkan nama Anda">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="age">Usia (tahun):</label>
+                        <input type="number" id="age" required min="1" max="120" placeholder="Contoh: 35">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="gender">Jenis Kelamin:</label>
+                        <select id="gender" required>
+                            <option value="">Pilih jenis kelamin</option>
+                            <option value="male">Laki-laki</option>
+                            <option value="female">Perempuan</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="totalCholesterol">Total Kolesterol (mg/dL):</label>
+                        <input type="number" id="totalCholesterol" required min="0" placeholder="Normal: < 200">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="ldl">LDL - Kolesterol Jahat (mg/dL):</label>
+                        <input type="number" id="ldl" required min="0" placeholder="Normal: < 100">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="hdl">HDL - Kolesterol Baik (mg/dL):</label>
+                        <input type="number" id="hdl" required min="0" placeholder="Normal: > 40 (pria), > 50 (wanita)">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="triglycerides">Trigliserida (mg/dL):</label>
+                        <input type="number" id="triglycerides" required min="0" placeholder="Normal: < 150">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="bloodPressure">Tekanan Darah:</label>
+                        <select id="bloodPressure" required>
+                            <option value="">Pilih kondisi tekanan darah</option>
+                            <option value="normal">Normal (< 120/80)</option>
+                            <option value="prehigh">Pre-Hipertensi (120-139/80-89)</option>
+                            <option value="high">Hipertensi (≥ 140/90)</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="smoking">Status Merokok:</label>
+                        <select id="smoking" required>
+                            <option value="">Pilih status</option>
+                            <option value="no">Tidak Merokok</option>
+                            <option value="former">Mantan Perokok</option>
+                            <option value="yes">Perokok Aktif</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="diabetes">Riwayat Diabetes:</label>
+                        <select id="diabetes" required>
+                            <option value="">Pilih status</option>
+                            <option value="no">Tidak Ada</option>
+                            <option value="prediabetes">Pre-diabetes</option>
+                            <option value="yes">Diabetes</option>
+                        </select>
+                    </div>
+
+                    <button type="submit" class="btn">🔍 Cek Kolesterol Sekarang</button>
+                </form>
+
+                <div class="loading" id="loading">
+                    <div class="spinner"></div>
+                    <p style="margin-top: 10px;">Menganalisis data Anda...</p>
+                </div>
+            </div>
+
+            <div class="card">
+                <h2>📊 Hasil Pemeriksaan</h2>
+                <div id="resultBox" class="result-box">
+                    <div id="riskLevel" class="risk-level"></div>
+                    <div id="resultDetail"></div>
+                    <div id="recommendations"></div>
+                </div>
+
+                <div class="warning">
+                    <strong>⚠️ Perhatian:</strong> Hasil ini hanya estimasi berdasarkan data yang Anda input. 
+                    Untuk diagnosis yang akurat, silakan konsultasi dengan dokter atau tenaga medis profesional.
+                </div>
+            </div>
+        </div>
+
+        <div class="info-section">
+            <h2>📚 Informasi Kolesterol</h2>
+            <div class="info-grid">
+                <div class="info-card">
+                    <h3>Total Kolesterol</h3>
+                    <p>
+                        <strong>Normal:</strong> < 200 mg/dL<br>
+                        <strong>Batas Tinggi:</strong> 200-239 mg/dL<br>
+                        <strong>Tinggi:</strong> ≥ 240 mg/dL
+                    </p>
+                </div>
+                <div class="info-card">
+                    <h3>LDL (Kolesterol Jahat)</h3>
+                    <p>
+                        <strong>Optimal:</strong> < 100 mg/dL<br>
+                        <strong>Mendekati Optimal:</strong> 100-129 mg/dL<br>
+                        <strong>Batas Tinggi:</strong> 130-159 mg/dL<br>
+                        <strong>Tinggi:</strong> 160-189 mg/dL
+                    </p>
+                </div>
+                <div class="info-card">
+                    <h3>HDL (Kolesterol Baik)</h3>
+                    <p>
+                        <strong>Rendah:</strong> < 40 mg/dL (pria), < 50 mg/dL (wanita)<br>
+                        <strong>Normal:</strong> 40-59 mg/dL<br>
+                        <strong>Optimal:</strong> ≥ 60 mg/dL
+                    </p>
+                </div>
+                <div class="info-card">
+                    <h3>Trigliserida</h3>
+                    <p>
+                        <strong>Normal:</strong> < 150 mg/dL<br>
+                        <strong>Batas Tinggi:</strong> 150-199 mg/dL<br>
+                        <strong>Tinggi:</strong> 200-499 mg/dL<br>
+                        <strong>Sangat Tinggi:</strong> ≥ 500 mg/dL
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <div class="info-section">
+            <h2>💡 Tips Menjaga Kolesterol Sehat</h2>
+            <ul class="tips-list">
+                <li>Konsumsi makanan rendah lemak jenuh dan trans, perbanyak serat dari buah dan sayuran</li>
+                <li>Olahraga teratur minimal 30 menit per hari, 5 kali seminggu</li>
+                <li>Jaga berat badan ideal sesuai dengan tinggi badan Anda</li>
+                <li>Hindari rokok dan batasi konsumsi alkohol</li>
+                <li>Kelola stres dengan baik melalui meditasi atau aktivitas yang menyenangkan</li>
+                <li>Konsumsi ikan berlemak seperti salmon, tuna, atau sarden 2 kali seminggu</li>
+                <li>Pilih minyak sehat seperti minyak zaitun atau minyak canola</li>
+                <li>Rutin cek kolesterol minimal setahun sekali</li>
+            </ul>
+        </div>
+
+        <footer>
+            <p>© 2024 Yuk Cek Lemak Mu - Dikembangkan oleh Nirmaysi</p>
+            <p style="margin-top: 10px; font-size: 0.9em;">
+                Platform ini dibuat untuk edukasi kesehatan. Selalu konsultasikan dengan dokter untuk penanganan medis yang tepat.
+            </p>
+        </footer>
+    </div>
+
+    <script>
+        document.getElementById('cholesterolForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            // Show loading
+            document.getElementById('loading').classList.add('show');
+            
+            // Simulate processing time
+            setTimeout(() => {
+                calculateRisk();
+                document.getElementById('loading').classList.remove('show');
+            }, 1500);
+        });
+
+        function calculateRisk() {
+            // Get form values
+            const name = document.getElementById('name').value;
+            const age = parseInt(document.getElementById('age').value);
+            const gender = document.getElementById('gender').value;
+            const totalCholesterol = parseInt(document.getElementById('totalCholesterol').value);
+            const ldl = parseInt(document.getElementById('ldl').value);
+            const hdl = parseInt(document.getElementById('hdl').value);
+            const triglycerides = parseInt(document.getElementById('triglycerides').value);
+            const bloodPressure = document.getElementById('bloodPressure').value;
+            const smoking = document.getElementById('smoking').value;
+            const diabetes = document.getElementById('diabetes').value;
+
+            // Calculate risk score
+            let riskScore = 0;
+            let details = [];
+            let recommendations = [];
+
+            // Total Cholesterol
+            if (totalCholesterol < 200) {
+                details.push("✅ Total kolesterol normal");
+            } else if (totalCholesterol <= 239) {
+                riskScore += 2;
+                details.push("⚠️ Total kolesterol batas tinggi");
+                recommendations.push("Kurangi konsumsi makanan berlemak");
+            } else {
+                riskScore += 4;
+                details.push("❌ Total kolesterol tinggi");
+                recommendations.push("Segera konsultasi dengan dokter");
+            }
+
+            // LDL
+            if (ldl < 100) {
+                details.push("✅ LDL (kolesterol jahat) optimal");
+            } else if (ldl <= 129) {
+                riskScore += 1;
+                details.push("⚠️ LDL mendekati batas");
+                recommendations.push("Perbanyak konsumsi serat");
+            } else if (ldl <= 159) {
+                riskScore += 2;
+                details.push("⚠️ LDL batas tinggi");
+                recommendations.push("Batasi makanan berlemak jenuh");
+            } else {
+                riskScore += 4;
+                details.push("❌ LDL tinggi");
+                recommendations.push("Perlu perubahan pola makan drastis");
+            }
+
+            // HDL
+            const hdlLimit = gender === 'male' ? 40 : 50;
+            if (hdl >= 60) {
+                details.push("✅ HDL (kolesterol baik) sangat baik");
+                riskScore -= 1; // HDL tinggi mengurangi risiko
+            } else if (hdl >= hdlLimit) {
+                details.push("✅ HDL normal");
+            } else {
+                riskScore += 2;
+                details.push("❌ HDL rendah");
+                recommendations.push("Tingkatkan aktivitas fisik");
+            }
+
+            // Triglycerides
+            if (triglycerides < 150) {
+                details.push("✅ Trigliserida normal");
+            } else if (triglycerides <= 199) {
+                riskScore += 1;
+                details.push("⚠️ Trigliserida batas tinggi");
+                recommendations.push("Kurangi konsumsi gula dan karbohidrat");
+            } else {
+                riskScore += 3;
+                details.push("❌ Trigliserida tinggi");
+                recommendations.push("Batasi alkohol dan makanan manis");
+            }
+
+            // Age factor
+            if (age >= 45 && gender === 'male') {
+                riskScore += 2;
+            } else if (age >= 55 && gender === 'female') {
+                riskScore += 2;
+            }
+
+            // Blood pressure
+            if (bloodPressure === 'prehigh') {
+                riskScore += 1;
+                recommendations.push("Monitor tekanan darah secara rutin");
+            } else if (bloodPressure === 'high') {
+                riskScore += 3;
+                recommendations.push("Kelola tekanan darah dengan obat dan diet");
+            }
+
+            // Smoking
+            if (smoking === 'yes') {
+                riskScore += 3;
+                recommendations.push("Berhenti merokok segera");
+            } else if (smoking === 'former') {
+                riskScore += 1;
+            }
+
+            // Diabetes
+            if (diabetes === 'yes') {
+                riskScore += 3;
+                recommendations.push("Kontrol gula darah secara ketat");
+            } else if (diabetes === 'prediabetes') {
+                riskScore += 1;
+                recommendations.push("Jaga pola makan untuk cegah diabetes");
+            }
+
+            // Determine risk level
+            let riskLevel, riskClass, riskMessage;
+            if (riskScore <= 3) {
+                riskLevel = "RISIKO RENDAH";
+                riskClass = "risk-low";
+                riskMessage = "Kondisi kolesterol Anda baik! Pertahankan gaya hidup sehat.";
+            } else if (riskScore <= 7) {
+                riskLevel = "RISIKO SEDANG";
+                riskClass = "risk-medium";
+                riskMessage = "Anda perlu mulai memperhatikan pola makan dan gaya hidup.";
+            } else {
+                riskLevel = "RISIKO TINGGI";
+                riskClass = "risk-high";
+                riskMessage = "Segera konsultasi dengan dokter untuk penanganan lebih lanjut!";
+            }
+
+            // Display results
+            const resultBox = document.getElementById('resultBox');
+            const riskLevelDiv = document.getElementById('riskLevel');
+            const resultDetail = document.getElementById('resultDetail');
+            const recommendationsDiv = document.getElementById('recommendations');
+
+            riskLevelDiv.className = `risk-level ${riskClass}`;
+            riskLevelDiv.innerHTML = `
+                <div>Halo ${name},</div>
+                <div>${riskLevel}</div>
+                <div style="font-size: 0.7em; font-weight: normal; margin-top: 10px;">${riskMessage}</div>
+            `;
+
+            resultDetail.innerHTML = `
+                <h3 style="margin-top: 20px; margin-bottom: 15px;">📋 Detail Pemeriksaan:</h3>
+                <ul style="list-style: none; padding: 0;">
+                    ${details.map(d => `<li style="margin-bottom: 8px;">${d}</li>`).join('')}
+                </ul>
+            `;
+
+            if (recommendations.length > 0) {
+                recommendationsDiv.innerHTML = `
+                    <h3 style="margin-top: 20px; margin-bottom: 15px;">💊 Rekomendasi:</h3>
+                    <ul style="list-style: none; padding: 0;">
+                        ${recommendations.map(r => `<li style="margin-bottom: 8px;">• ${r}</li>`).join('')}
+                    </ul>
+                `;
+            } else {
+                recommendationsDiv.innerHTML = `
+                    <h3 style="margin-top: 20px; margin-bottom: 15px;">💊 
